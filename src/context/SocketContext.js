@@ -5,7 +5,7 @@ import { io } from "socket.io-client";
 // এখানে ট্রিক হলো: .env থেকে সরাসরি মেইন ডোমেন নিতে হবে, তাই /api/v1 বাদ দিয়ে শুধু ডোমেন রুট পাঠানো ভালো
 const SOCKET_URL = process.env.REACT_APP_API_ENDPOINT 
   ? process.env.REACT_APP_API_ENDPOINT.replace("/api/v1", "") 
-  : "http://localhost:3000";
+  : "https://my-whatsapp-web-1.onrender.com";
 
 // সকেট ইনিশিয়ালিজেশন (এখানে আপনার দেওয়া কোডটি যুক্ত করা হলো)
 export const socket = io(SOCKET_URL, {
