@@ -2,12 +2,11 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
 // আপনার ব্যাকএন্ড এন্ডপয়েন্ট (রেন্ডার বা লোকালহোস্ট ইউআরএল)
-// এখানে ট্রিক হলো: .env থেকে সরাসরি মেইন ডোমেন নিতে হবে, তাই /api/v1 বাদ দিয়ে শুধু ডোমেন রুট পাঠানো ভালো
 const SOCKET_URL = process.env.REACT_APP_API_ENDPOINT 
   ? process.env.REACT_APP_API_ENDPOINT.replace("/api/v1", "") 
   : "https://my-whatsapp-web-1.onrender.com";
 
-// সকেট ইনিশিয়ালিজেশন (এখানে আপনার দেওয়া কোডটি যুক্ত করা হলো)
+// সকেট ইনিশিয়ালিজেশন
 export const socket = io(SOCKET_URL, {
   autoConnect: true,
   reconnection: true,
@@ -15,8 +14,8 @@ export const socket = io(SOCKET_URL, {
   reconnectionDelay: 2000,         // প্রতি ২ সেকেন্ড পর পর ট্রাই করবে
 });
 
-// বাকি Context কোড যা প্রজেক্টে ইতিমধ্যে আছে (যেমন নিচে দেওয়া হলো):
-const SocketContext = createContext();
+// এই অংশটি পরিবর্তন করা হয়েছে: createContext-এর ভেতর ডিফল্ট সকেট অবজেক্ট দেওয়া হয়েছে
+export const SocketContext = createContext(socket);
 
 export const SocketProvider = ({ children }) => {
   return (
@@ -27,3 +26,6 @@ export const SocketProvider = ({ children }) => {
 };
 
 export const useSocket = () => useContext(SocketContext);
+
+// রেন্ডারের বিল্ড এরর (Default Export Mismatch) দূর করার জন্য এই লাইনটি অত্যন্ত জরুরি
+export default SocketContext;
